@@ -12,3 +12,32 @@ Adrian:
 Sivert:
 
 Even: 
+
+ We recommend the following resources:
+– https://www.python.org
+– https://docs.scipy.org/doc/
+– http://matplotlib.org
+– https://github.com/sintefmath/Splipy
+– http://www.pythonforbeginners.com/files/reading-and-writing-files-in-python
+
+• Start as simple as possible. Do one thing at the time and verify that it is correct
+before proceeding. Compare with hand calculations on simple problems, if you find
+this easier. It is recommended to construct small reference problems and test them
+to ensure that the code is correct.
+
+• You should hand in a written answer to all the questions in LaTeX. It is sufficient to
+just answer the questions with properly discussion, which will be the main emphasis.
+Do not write a traditional report. Source code should not be contained in the report.
+
+• It is important to obtain the correct results and discuss them. If you use other sources
+than the text book or lecture notes, which is strongly recommended, remember to
+always cite them.
+
+• A well-documented and self-contained code satisfies the following criterions:
+– It includes sufficient information to make it clear for the user what the program
+does, and how to use it.
+– It executes and provides expected results without any problems. In particular
+this means that all submodules you write must be included in this file.
+
+• There will be much emphasis on running time. When you are sure that the program
+is 100% correct, examine whether the speed is optimal.
