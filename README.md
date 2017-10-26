@@ -3,15 +3,19 @@
 # To-do:
 
 Alle: 
-Til møtet mandag 30. Bruk tid på å sette dere inn i problemstillingen, les gjennom og prøv å forstå alle oppgavene så vi har vært borti det.
+Til møtet mandag 30.: Bruk tid på å sette dere inn i problemstillingen, les gjennom og prøv å forstå alle oppgavene så vi har vært borti det.
 
 Oliver: 
+Til møtet mandag 30.: Gjør 1b
 
-Adrian:
+Adrian: 1a, 1e, 1f
+Til møtet mandag 30.: e)
 
 Sivert:
+Til møtet mandag 30.: Drive UTS
 
 Even: 
+Til møtet mandag 30.: gjør 2a) og 2b)
 
  We recommend the following resources:
 – https://www.python.org
