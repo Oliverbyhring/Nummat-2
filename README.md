@@ -1,4 +1,4 @@
-# Nummat-2 To-do-liste
+# To-do-liste
 (Faste møter mandag 10:00 og torsdag 09:00)
 
 Alle: 
