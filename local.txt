@@ -1,0 +1,12 @@
+Gjort:
+forstå hvorfor 2n
+Les om B-spline og finn ut how to derive scheme.
+finn ut hva en band structure er: type tridiagonal
+
+Neste:
+propose a method for reducing the bandwidth
+
+
+Spørsmål: 
+reduce bandwidth, har jeg rett tanke?
+
