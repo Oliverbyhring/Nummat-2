@@ -1,0 +1,35 @@
+########
+Gjort:
+########
+forstå hvorfor 2n
+Les om B-spline og finn ut how to derive scheme.
+finn ut hva en band structure er: type tridiagonal
+hvordan bestemmes antall basisfunksjoner ut fra p og knot vectoren??
+propose a method for reducing the bandwidth
+Augment vektor: Snu om på metoden!!! hvis det blir odde 2n, legg til punkt
+For en open knot vector repeteres antall endepunkter p+1 ganger!!!!!!
+
+########
+Neste:
+########
+Implementer initialstilling for xi og w.
+eksakte integraler
+
+########
+Svar:
+########
+
+initialverdier tas rett fra dokumentet på nett
+
+min metode med å stokke om på kolonnene i dF var rett! Trenger da kun endre på vektoren slik at det blir annenhver omega og xi, h.s. står
+
+eksakt integral på oppgaveark, eksakt derivert fra sp.evaluate(xi,d=1)
+
+hvordan kan vi være sikker på at vi har band structure etter flere iterasjoner?
+Det har vi tydeligvis, jeg har tenkt feil? Kanskje xi beveger seg, har ingenting å xi.
+
+hvorfor får jeg 2n+1 basisfunksjoner evaluert?? Fordi i evaluate så skal order=p+1 = degree+1
+
+###############
+Spørsmål: 
+###############

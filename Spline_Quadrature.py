@@ -1,4 +1,5 @@
 ################################################################################
+import time
 import numpy as np
 import scipy as sp
 import splipy as sp
@@ -11,41 +12,44 @@ TOLERANCE = 1e-11
 #kontrollert og funnet ok 30.10
 def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     # 1) Prepare knot vector
-    if len(T)%2: #if odd number of knots, we add a knot
+    if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot in the knot vector if n is not even
         new_T = T[:p+1]
         new_T.append((T[p] + T[p+1])/2)
         new_T += T[p+1:]
         T = new_T
-
-    # For å ha n basisfunksjoner må knot vector T ha n+p+1 elementer!
-    n = int((len(T) - p - 1)/2)
-    print("Jevnt antall basisfunksjoner, 2n =", 2*n)
-    if abs((len(T) - p - 1) % 2) > 1e-10:
-        print("n er ikke heltall!")
-        return
+    n = int((len(T) - p - 1) / 2)
+    print("2n =", 2*n)
 
     # 2) Generate basis functions, initial xi and initial w
-    basis = sp.BSplineBasis(order=p, knots=T)
-    print(basis)
+    basis = sp.BSplineBasis(order=p+1, knots=T)
+    print("basis", basis)
     xi = np.linspace(0, 4, n) #This must be our initial guess of xi
-    w = np.ones(n)
+    w = np.array([1,2,3]) # Denne initialiseres som fra optimal quad-boka
 
-    B = np.array(basis.evaluate(xi))  # B.shape = (n evaluation points, 2n basis functions)
-    B = B.transpose() # B.shape = (2n basis functions, n evaluation points)
-    print(B)
+    B = np.array(basis.evaluate(xi)).transpose() # B.shape = (2n basis functions, n evaluation points)
+    print("B\n", B)
     if B.shape != (2*n, n):
         print("Not 2nXn!")
-        return
+    print("Hvorfor er ikke antall rader = antall basisfunksjoner her 2n?")
     dFdw = B  # dFdw is equal to B!
+    print("dFdw\n", dFdw)
+    B_der = np.array(basis.evaluate(xi, d=1)).transpose()
+    print("B_der\n", B_der)
+    dFdxi = B_der*w # Dette er ikke matrix multiplication, men elementwise vekting av kolonnene i B_der med elementene i w
+    print("dFdxi\n", dFdxi)
 
-    #dFdxi =
+    # 3) Sette sammen en Jacobi med redusert bandwidth
+    naive_jacobi = np.concatenate((dFdw, dFdxi), axis=1)
+    print("naive_jacobi\n", naive_jacobi)
+    print()
 
-    # 3) Calculate exact integrals
+
+    # 4) Calculate exact integrals
     integrals_c = [0]
 
     return T, n, integrals_c
 
-Prepare_Data([0,0,0,1,2,3,4,4,4], 3)
+Prepare_Data([0,0,0,1,2,3,4,4,4], 2)
 
 def Assembly(basis,I,W,X,n):
     return 0
