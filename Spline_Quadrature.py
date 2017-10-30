@@ -29,8 +29,7 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     B = np.array(basis.evaluate(xi)).transpose() # B.shape = (2n basis functions, n evaluation points)
     print("B\n", B)
     if B.shape != (2*n, n):
-        print("Not 2nXn!")
-    print("Hvorfor er ikke antall rader = antall basisfunksjoner her 2n?")
+        print("Not 2nXn! Du har glemt a order=p+1!")
     dFdw = B  # dFdw is equal to B!
     print("dFdw\n", dFdw)
     B_der = np.array(basis.evaluate(xi, d=1)).transpose()
@@ -41,8 +40,19 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     # 3) Sette sammen en Jacobi med redusert bandwidth
     naive_jacobi = np.concatenate((dFdw, dFdxi), axis=1)
     print("naive_jacobi\n", naive_jacobi)
-    print()
-
+    split_dFdw = np.hsplit(dFdw, n)
+    print(split_dFdw)
+    split_dFdxi = np.hsplit(dFdxi, n)
+    print(split_dFdxi)
+    jacobian = np.concatenate((split_dFdw[0], split_dFdxi[0]), axis=1)
+    for i in range(1,n):
+        jacobian = np.concatenate((jacobian, split_dFdw[i], split_dFdxi[i]), axis=1)
+    print("jacobian\n", jacobian)
+    print("But is the jacobian a numpy array now?")
+    # Invert Jacobian
+    inv_jacobi = np.linalg.inv(jacobian)
+    print(inv_jacobi)
+    
 
     # 4) Calculate exact integrals
     integrals_c = [0]
