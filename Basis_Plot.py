@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import splipy as sp
+np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 
 def Basis_Plot():
@@ -20,7 +21,6 @@ def Basis_Plot():
     B2 = basis2.evaluate(t)
     B3 = basis3.evaluate(t)
     B4 = basis4.evaluate(t)
-    np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
     print(B1)
     # plot the basis functions
 

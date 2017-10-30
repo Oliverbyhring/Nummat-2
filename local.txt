@@ -4,9 +4,23 @@ Les om B-spline og finn ut how to derive scheme.
 finn ut hva en band structure er: type tridiagonal
 
 Neste:
+hvordan bestemmes antall basisfunksjoner ut fra p og knot vectoren??
 propose a method for reducing the bandwidth
 
 
 Spørsmål: 
-reduce bandwidth, har jeg rett tanke?
+Så vi vil ha 2n basisfunksjoner.
+Fra kilde om optimal quadrature: For å ha n basisfunksjoner må knot vector T ha n+p+1 elementer
+Så vi vil ha n = (len(T) - p - 1)/2, right?
+Vi har sikret oss at T har jevnt antall elementer. Er p fastsatt slik at vi sikrer oss heltallig n?
+
+For en open knot vector repeteres antall endepunkter p-1 ganger (inkludert den egentlige), ikke sant?
+
+initial guess for xi, skal vi bruke Greville abscissae T fra rapporten?
+hvis ikke, hvordan vet vi da at vi har band structure??
+
+reduce bandwidth, hva er greia?
+
+
+Initialisering av w og xi: vi trenger fastsatt n for å bestemme lengden av linspace for å evaluere basisfunksjonene
 
