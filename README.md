@@ -2,26 +2,23 @@
 (Faste møter mandag 10:00 og torsdag 09:00)
 
 Alle: 
-
-• Til møtet mandag 30.: Bruk tid på å sette dere inn i problemstillingen, les gjennom og prøv å forstå alle oppgavene så vi har vært borti det.
-
-• Til møtet mandag 30.: Lag en tidsplan med delfrister frem mot ferdig prosjekt.
+• Til møtet mandag 30.: Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
 
 Oliver: 
 
-• Til møtet mandag 30.: Gjør 1b
+• Til møtet torsdag 2: Fortsette 1b
 
 Adrian: 1a, 1e, 1f
 
-• Til møtet mandag 30.: e)
+• Til møtet torsdag 2.: ferdig med 1e) og godt i gang med a) og f)
 
 Sivert:
 
-• Til møtet mandag 30.: Drive UTS
+• Til møtet torsdag 2.: våkne
 
 Even: 
 
-• Til møtet mandag 30.: gjør 2a) og 2b)
+• Til møtet torsdag 2.: gjør 2c og ha utkast på 2d
 
  We recommend the following resources:
 – https://www.python.org
@@ -51,3 +48,9 @@ this means that all submodules you write must be included in this file.
 
 • There will be much emphasis on running time. When you are sure that the program
 is 100% correct, examine whether the speed is optimal.
+
+Straffepils: 
+Oliver 1 (ikke gjort todo mandag 30)
+Even 
+Adrian 
+Sivert 1 (ikke møtt mandag 30)
