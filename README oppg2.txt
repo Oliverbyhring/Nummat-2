@@ -23,6 +23,13 @@ Tid for stokmod.
 24. november - deadline
 
 ###################################
+##### Ting å passe på
+###################################
+Tau er 1-indeksret i Optimal Quadrature og oppgaveteksten!!!
+p = degree. Order k = p + 1
+An open knot vector will have the first and last elements repeated p+1 times.
+
+###################################
 ##### Kodeplan
 ###################################
 

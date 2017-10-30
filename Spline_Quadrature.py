@@ -9,9 +9,9 @@ np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 TOLERANCE = 1e-11
 
-#kontrollert og funnet ok 30.10
+#kontrollert og funnet ok dato:
 def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
-    # 1) Prepare knot vector
+    # 0) Prepare knot vector
     if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot in the knot vector if n is not even
         new_T = T[:p+1]
         new_T.append((T[p] + T[p+1])/2)
@@ -20,12 +20,33 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     n = int((len(T) - p - 1) / 2)
     print("2n =", 2*n)
 
-    # 2) Generate basis functions, initial xi and initial w
+    # 1) Calculate exact integrals
+    integrals_c = np.zeros(2*n)
+    for i in range(2*n):
+        integrals_c[i] = (T[i+p+1] - T[i])/(p+1)
+    integrals_c = integrals_c.T #Trenger vi å transpose denne?
+    print(integrals_c)
+    print("Ser faen meg legit ut. De basisfunksjonene som er helt inneholdt i intervallet integreres til 1, de mot kantene har deler som 'ligger utenfor'")
+
+    # 2) Generate initial xi and initial w
+    # The initial guess of xi_i must have length n and be somehow distributed over the intervall. Using Greville.
+    xi = np.zeros(n)
+    tau_abscissa = np.zeros(n)
+    # Neste her skal være 2n!!!!!!!!!!!!!!!!!!!!!!
+    for i in range(n): # Skjønner ikke hvordan vi skal få 2n av disse!!!!!!!!!!!!!!!!!!!!!!
+        tau_abscissa[i] = sum(T[i:i+p])/p #Tau er 1-indeksert i "Optimal Quadrature", 0-indeksert her.
+    for i in range(n):
+        xi[i] = (tau_abscissa[i] + tau_abscissa[i])/2 #Skal være den uinder!!!!!!!!!!!!!!!!!!!!!!
+        # xi[i] = (tau_abscissa[2 * i] + tau_abscissa[2 * i + 1]) / 2
+    print(xi)
+
+    w = np.zeros(n) # Denne initialiseres som fra optimal quad-boka
+    for i in range(n):
+        w[i] = integrals_c[2*i] + integrals_c[2*i+1]
+
+    # 3) Generate basis functions, evaluer og finn partiellderiverte av F
     basis = sp.BSplineBasis(order=p+1, knots=T)
     print("basis", basis)
-    xi = np.linspace(0, 4, n) #This must be our initial guess of xi
-    w = np.array([1,2,3]) # Denne initialiseres som fra optimal quad-boka
-
     B = np.array(basis.evaluate(xi)).transpose() # B.shape = (2n basis functions, n evaluation points)
     print("B\n", B)
     if B.shape != (2*n, n):
@@ -37,7 +58,10 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     dFdxi = B_der*w # Dette er ikke matrix multiplication, men elementwise vekting av kolonnene i B_der med elementene i w
     print("dFdxi\n", dFdxi)
 
-    # 3) Sette sammen en Jacobi med redusert bandwidth
+    # 4) Beregne F0(z)
+    F = 
+
+    # 5) Sette sammen en Jacobi med redusert bandwidth
     naive_jacobi = np.concatenate((dFdw, dFdxi), axis=1)
     print("naive_jacobi\n", naive_jacobi)
     split_dFdw = np.hsplit(dFdw, n)
@@ -50,22 +74,18 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     print("jacobian\n", jacobian)
     print("But is the jacobian a numpy array now?")
     # Invert Jacobian
-    inv_jacobi = np.linalg.inv(jacobian)
+    inv_jacobi = np.linalg.inv(jacobian) #Jacobian er singular hurra!
     print(inv_jacobi)
-    
 
-    # 4) Calculate exact integrals
-    integrals_c = [0]
-
-    return T, n, integrals_c
-
-Prepare_Data([0,0,0,1,2,3,4,4,4], 2)
+    return T, n, integrals_c, F, inv_jacobi
 
 def Assembly(basis,I,W,X,n):
     return 0
 
 def Spline_Quadrature():
-    knots = [0, 0, 0, 1, 2, 3, 4, 4, 4]
+    T = [0, 0, 0, 1, 2, 3, 4, 4, 4]
+    p = 2
+    T, n, integrals_c = Prepare_Data(T, p)
 """
     Jacobian = Assembly()
     xk = x0

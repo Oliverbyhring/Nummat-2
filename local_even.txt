@@ -8,28 +8,29 @@ hvordan bestemmes antall basisfunksjoner ut fra p og knot vectoren??
 propose a method for reducing the bandwidth
 Augment vektor: Snu om på metoden!!! hvis det blir odde 2n, legg til punkt
 For en open knot vector repeteres antall endepunkter p+1 ganger!!!!!!
-
-########
-Neste:
-########
 Implementer initialstilling for xi og w.
 eksakte integraler
+
+########
+Neste/ - Spørsmål:
+########
+Rydd opp i initialisering av w og xi
+Jacobian er singular hurra!
+Til torsdag: Latex a b c
+I løpet av torsdag få Newton's Metode til å kjøre med Sivert
 
 ########
 Svar:
 ########
 
-initialverdier tas rett fra dokumentet på nett
-
 min metode med å stokke om på kolonnene i dF var rett! Trenger da kun endre på vektoren slik at det blir annenhver omega og xi, h.s. står
 
 eksakt integral på oppgaveark, eksakt derivert fra sp.evaluate(xi,d=1)
-
-hvordan kan vi være sikker på at vi har band structure etter flere iterasjoner?
-Det har vi tydeligvis, jeg har tenkt feil? Kanskje xi beveger seg, har ingenting å xi.
-
-hvorfor får jeg 2n+1 basisfunksjoner evaluert?? Fordi i evaluate så skal order=p+1 = degree+1
+Vi har tydeligvis band structure også etter flere iterasjoner. Kanskje xi beveger seg, har ingenting å xi.
 
 ###############
 Spørsmål: 
 ###############
+ - Why do  we have twice as many Greville abscissae as we have quadrature points? We only have n+p+1 Tau-elements!
+ - Er Fi spline-funksjonen over hele greia eller bare et delintervall?
+ - how exactly fungerer multiplikasjon av matriser og shit? Sivert? Invers dFn * Fn
