@@ -1,20 +1,21 @@
 # To-do-liste
 (Faste møter mandag 10:00 og torsdag 09:00)
 
-Alle: 
-• Til møtet mandag 30.: Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
-
 Oliver: 
 
 • Til møtet torsdag 2: Fortsette 1b
+
+• Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
 
 Adrian: 1a, 1e, 1f
 
 • Til møtet torsdag 2.: ferdig med 1e) og godt i gang med a) og f)
 
+• Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
+
 Sivert:
 
-• Til møtet torsdag 2.: våkne
+• Til møtet torsdag 2.: våkne i tide
 
 Even: 
 
