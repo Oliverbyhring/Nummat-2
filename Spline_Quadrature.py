@@ -25,8 +25,8 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     for i in range(2*n):
         integrals_c[i] = (T[i+p+1] - T[i])/(p+1)
     integrals_c = integrals_c.T #Trenger vi å transpose denne?
-    print(integrals_c)
-    print("Ser faen meg legit ut. De basisfunksjonene som er helt inneholdt i intervallet integreres til 1, de mot kantene har deler som 'ligger utenfor'")
+    print("integrals_c", integrals_c)
+    print("Ser legit ut. De basisfunksjonene som er helt inneholdt i intervallet integreres til 1, de mot kantene har deler som 'ligger utenfor'")
 
     # 2) Generate initial xi and initial w
     # The initial guess of xi_i must have length n and be somehow distributed over the intervall. Using Greville.
@@ -38,15 +38,21 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     for i in range(n):
         xi[i] = (tau_abscissa[i] + tau_abscissa[i])/2 #Skal være den uinder!!!!!!!!!!!!!!!!!!!!!!
         # xi[i] = (tau_abscissa[2 * i] + tau_abscissa[2 * i + 1]) / 2
-    print(xi)
+    print("xi", xi)
+    # Denne er for å få resten til å fungere inntil vi fikser det over!!!!!!!!!:
+    xi = np.linspace(0,6,n)
 
     w = np.zeros(n) # Denne initialiseres som fra optimal quad-boka
     for i in range(n):
         w[i] = integrals_c[2*i] + integrals_c[2*i+1]
 
     # 3) Generate basis functions, evaluer og finn partiellderiverte av F
-    basis = sp.BSplineBasis(order=p+1, knots=T)
+    basis = sp.BSplineBasis(order=p+1, knots=T) #Burde denne lagres eksternt for å forbedre kjøretid?
     print("basis", basis)
+    return w, xi, n, integrals_c
+
+def Assembly(basis, I, w, xi, n):
+    # 1) Lag en matrise med basisfunksjonene evaluert med gitte w og xi
     B = np.array(basis.evaluate(xi)).transpose() # B.shape = (2n basis functions, n evaluation points)
     print("B\n", B)
     if B.shape != (2*n, n):
@@ -58,47 +64,46 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     dFdxi = B_der*w # Dette er ikke matrix multiplication, men elementwise vekting av kolonnene i B_der med elementene i w
     print("dFdxi\n", dFdxi)
 
-    # 4) Beregne F0(z)
-    F = 
+    # 2) Beregn F-matrisen gange omega-vektor, uten integral
+    Fn = B.dot(w)
 
-    # 5) Sette sammen en Jacobi med redusert bandwidth
+    # 3) Sett sammen en Jacobi med redusert bandwidth
     naive_jacobi = np.concatenate((dFdw, dFdxi), axis=1)
     print("naive_jacobi\n", naive_jacobi)
     split_dFdw = np.hsplit(dFdw, n)
-    print(split_dFdw)
     split_dFdxi = np.hsplit(dFdxi, n)
-    print(split_dFdxi)
     jacobian = np.concatenate((split_dFdw[0], split_dFdxi[0]), axis=1)
     for i in range(1,n):
         jacobian = np.concatenate((jacobian, split_dFdw[i], split_dFdxi[i]), axis=1)
     print("jacobian\n", jacobian)
     print("But is the jacobian a numpy array now?")
     # Invert Jacobian
-    inv_jacobi = np.linalg.inv(jacobian) #Jacobian er singular hurra!
-    print(inv_jacobi)
+    inv_jacobi = np.linalg.inv(jacobian) #Jacobian var singular fordi x ivar fucked up
+    print("inv_jacobi\n", inv_jacobi)
 
-    return T, n, integrals_c, F, inv_jacobi
-
-def Assembly(basis,I,W,X,n):
-    return 0
+    return Fn, inv_jacobi
 
 def Spline_Quadrature():
-    T = [0, 0, 0, 1, 2, 3, 4, 4, 4]
-    p = 2
-    T, n, integrals_c = Prepare_Data(T, p)
-"""
-    Jacobian = Assembly()
-    xk = x0
+    T = [0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6]
+    p = 3
+    w, xi, n, integrals_c = Prepare_Data(T, p)
+    # T er endret men brukes ikke videre ned i koden så returneres ikke. For å vise at vi ikke trenger T lengre:
+    T = [0]
+
+    ############################
+    Fn, dFn_invers = Assembly()
+
+    # zk = [w, xi]
     counter = 0
-    while np.linalg.norm(F(xk), ord=np.inf) > TOLERANCE:
-        Assembly()
-        dx = Jacobian * F
-        xk = xk - dx
+    convergence_criteria = Fn - integrals_c
+    while np.linalg.norm(convergence_criteria, ord=np.inf) > TOLERANCE:
+        Fn, dFn_invers = Assembly()
+        dx = dFn_invers.dot(Fn-integrals_c)
+        zk = zk - dx
         counter += 1
     print(counter, 'iterations')
 
-    return xk
-"""
+    return zk
 
 if __name__ == "__main__":
     Spline_Quadrature()

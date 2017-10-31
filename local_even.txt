@@ -34,3 +34,6 @@ Spørsmål:
  - Why do  we have twice as many Greville abscissae as we have quadrature points? We only have n+p+1 Tau-elements!
  - Er Fi spline-funksjonen over hele greia eller bare et delintervall?
  - how exactly fungerer multiplikasjon av matriser og shit? Sivert? Invers dFn * Fn
+ - Hva er I i Assembly?
+ - Hvorfor skal dFn-1 være akkurat foran Fn og ikke bak?
+

@@ -35,19 +35,19 @@ An open knot vector will have the first and last elements repeated p+1 times.
 
 2d)
 
-	Prepare_Data :
-w og xi initialiseres
-F evalueres
-dF evalueres
-Kalkulerer eksakte integraler som lagres i Spline_Quadrature
-returnerer initialbetingelser med 2nXn ivaretatt
+	Prepare_Data returnerer:
+w og xi initialisert
+n
+integrals_c, eksakte integraler som lagres i Spline_Quadrature
 
-	Assembly:
-opdaterer F og dF ut fra nye løsninger mhp xi og w
+	Assembly tar inn w og xi og returnerer:
+F evaluert
+dF evaluert
 
 	Spline_Quadrature:
 Lagrer eksakte integraler
 kjører loop som bruker assembly i hver loop
+itererer til vi når himmelen
 
 ###################################
 ##### Resources
