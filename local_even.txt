@@ -31,6 +31,7 @@ Vi har tydeligvis band structure også etter flere iterasjoner. Kanskje xi bevege
 ###############
 Spørsmål: 
 ###############
+ - Status: får singular matrix i iterasjon 2. Noe er feil med selve itreasjonen.
  - Hovedspørsmålet nå: Hva faen er dz og hvordan oppdaterer jeg w og xi på en fornuftig måte?????
     Under kjøring stabiliserte programmet seg på dz = [ 0.49036477  0.16050547  1.17197402  0.24994785  1.81147473  0.09285416  1.64591434 -0.24686864  0.88027214 -0.2838045 ]
  - Er Fi spline-funksjonen over hele greia eller bare et delintervall?

@@ -85,19 +85,17 @@ def Spline_Quadrature():
     basis, integrals_c, w, xi, n = Prepare_Data(T, p)
     # T er endret men brukes ikke videre ned i koden så returneres ikke.
 
-    Fn, dFn_invers = Assembly(basis, integrals_c, w, xi, n)
-
-    # To alternativer:
+    # Alternativ 1:
     zk = [xi, w]
-    # og så shuffler man rundt på dz hver gang. Tar tid. Bedre med:
+    # og så shuffler man rundt på dz hver gang. Tar litt tid men bedre enn å endre på alt som skjer i Assembly
 
-    # zk er en glidelås av xi og w
-    zk = np.zeros(2*n)
-    for i in range(n):
-        zk[2*i] = xi[i]
-        zk[2*i+1] = w[i]
-    print("zk_0", zk)
-    # Dette må nå implementeres gjennom assembly!
+    # Alternativ 2: zk er en glidelås av xi og w
+    #zk = np.zeros(2*n)
+    #for i in range(n):
+    #   zk[2*i] = xi[i]
+    #    zk[2*i+1] = w[i]
+    #print("zk_0", zk)
+    # Dette må i så fall implementeres gjennom assembly
 
     dz = np.array([10000])
     counter = 0
@@ -109,7 +107,11 @@ def Spline_Quadrature():
         print("dz", -dz)
         # Antar at dz må være på formen [ xi_1 w_1 xi_2 w_2 ... xi_n w_n ]
         time.sleep(1)
-        zk -= dz
+        for i in range(n):
+            xi[i] -= dz[2*i]
+            w[i] -= dz[2*i-1]
+
+        # zk -= dz
         counter += 1
     print(counter, 'iterations')
 
