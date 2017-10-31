@@ -10,12 +10,12 @@ Augment vektor: Snu om på metoden!!! hvis det blir odde 2n, legg til punkt
 For en open knot vector repeteres antall endepunkter p+1 ganger!!!!!!
 Implementer initialstilling for xi og w.
 eksakte integraler
+Rydd opp i initialisering av w og xi
+Jacobian er singular hurra!
 
 ########
 Neste/ - Spørsmål:
 ########
-Rydd opp i initialisering av w og xi
-Jacobian er singular hurra!
 Til torsdag: Latex a b c
 I løpet av torsdag få Newton's Metode til å kjøre med Sivert
 
@@ -31,9 +31,14 @@ Vi har tydeligvis band structure også etter flere iterasjoner. Kanskje xi bevege
 ###############
 Spørsmål: 
 ###############
- - Why do  we have twice as many Greville abscissae as we have quadrature points? We only have n+p+1 Tau-elements!
+ - Hovedspørsmålet nå: Hva faen er dz og hvordan oppdaterer jeg w og xi på en fornuftig måte?????
+    Under kjøring stabiliserte programmet seg på dz = [ 0.49036477  0.16050547  1.17197402  0.24994785  1.81147473  0.09285416  1.64591434 -0.24686864  0.88027214 -0.2838045 ]
  - Er Fi spline-funksjonen over hele greia eller bare et delintervall?
  - how exactly fungerer multiplikasjon av matriser og shit? Sivert? Invers dFn * Fn
- - Hva er I i Assembly?
  - Hvorfor skal dFn-1 være akkurat foran Fn og ikke bak?
+ - beregner jeg Jacobien på en fornuftig måte? Hvor lang tid tar f. eks. transpose?
 
+###################################################
+Logg med alt som har plaget oss som har gått over:
+###################################################
+Jacobian var singular før fordi xi var fucked up

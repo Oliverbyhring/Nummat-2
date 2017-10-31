@@ -17,68 +17,64 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
         new_T.append((T[p] + T[p+1])/2)
         new_T += T[p+1:]
         T = new_T
+    print("T =", T)
     n = int((len(T) - p - 1) / 2)
     print("2n =", 2*n)
-
     # 1) Calculate exact integrals
     integrals_c = np.zeros(2*n)
     for i in range(2*n):
         integrals_c[i] = (T[i+p+1] - T[i])/(p+1)
-    integrals_c = integrals_c.T #Trenger vi å transpose denne?
     print("integrals_c", integrals_c)
     print("Ser legit ut. De basisfunksjonene som er helt inneholdt i intervallet integreres til 1, de mot kantene har deler som 'ligger utenfor'")
 
     # 2) Generate initial xi and initial w
-    # The initial guess of xi_i must have length n and be somehow distributed over the intervall. Using Greville.
+    # There must be n initial guesses of xi_distributed over the intervall. Using Greville.
     xi = np.zeros(n)
-    tau_abscissa = np.zeros(n)
-    # Neste her skal være 2n!!!!!!!!!!!!!!!!!!!!!!
-    for i in range(n): # Skjønner ikke hvordan vi skal få 2n av disse!!!!!!!!!!!!!!!!!!!!!!
-        tau_abscissa[i] = sum(T[i:i+p])/p #Tau er 1-indeksert i "Optimal Quadrature", 0-indeksert her.
+    tau_abscissa = np.zeros(2*n)
+    for i in range(2*n):
+        tau_abscissa[i] = sum(T[i+1:i+p+1])/p
     for i in range(n):
-        xi[i] = (tau_abscissa[i] + tau_abscissa[i])/2 #Skal være den uinder!!!!!!!!!!!!!!!!!!!!!!
-        # xi[i] = (tau_abscissa[2 * i] + tau_abscissa[2 * i + 1]) / 2
+        xi[i] = (tau_abscissa[2 * i] + tau_abscissa[2 * i + 1]) / 2
     print("xi", xi)
-    # Denne er for å få resten til å fungere inntil vi fikser det over!!!!!!!!!:
-    xi = np.linspace(0,6,n)
 
-    w = np.zeros(n) # Denne initialiseres som fra optimal quad-boka
+    w = np.zeros(n) # Denne initialiseres også som fra optimal quad-boka
     for i in range(n):
         w[i] = integrals_c[2*i] + integrals_c[2*i+1]
 
     # 3) Generate basis functions, evaluer og finn partiellderiverte av F
     basis = sp.BSplineBasis(order=p+1, knots=T) #Burde denne lagres eksternt for å forbedre kjøretid?
     print("basis", basis)
-    return w, xi, n, integrals_c
+    return basis, integrals_c, w, xi, n
 
-def Assembly(basis, I, w, xi, n):
-    # 1) Lag en matrise med basisfunksjonene evaluert med gitte w og xi
-    B = np.array(basis.evaluate(xi)).transpose() # B.shape = (2n basis functions, n evaluation points)
-    print("B\n", B)
-    if B.shape != (2*n, n):
-        print("Not 2nXn! Du har glemt a order=p+1!")
-    dFdw = B  # dFdw is equal to B!
-    print("dFdw\n", dFdw)
-    B_der = np.array(basis.evaluate(xi, d=1)).transpose()
-    print("B_der\n", B_der)
-    dFdxi = B_der*w # Dette er ikke matrix multiplication, men elementwise vekting av kolonnene i B_der med elementene i w
-    print("dFdxi\n", dFdxi)
+def Assembly(basis, integrals_c, w, xi, n):
+    # 1) Lag en N-matrise med basisfunksjonene N evaluert i xi-punktene
+    N = np.array(basis.evaluate(xi)) # N.shape = (n evaluation points, 2n basis functions)
+    # Vi venter med å transpose siden dette gjør det lettere å flette sammen en fancy jacobian
 
     # 2) Beregn F-matrisen gange omega-vektor, uten integral
-    Fn = B.dot(w)
+    Fn = N.transpose().dot(w) - integrals_c
+    print("Fn", Fn)
 
-    # 3) Sett sammen en Jacobi med redusert bandwidth
-    naive_jacobi = np.concatenate((dFdw, dFdxi), axis=1)
-    print("naive_jacobi\n", naive_jacobi)
-    split_dFdw = np.hsplit(dFdw, n)
-    split_dFdxi = np.hsplit(dFdxi, n)
-    jacobian = np.concatenate((split_dFdw[0], split_dFdxi[0]), axis=1)
-    for i in range(1,n):
-        jacobian = np.concatenate((jacobian, split_dFdw[i], split_dFdxi[i]), axis=1)
-    print("jacobian\n", jacobian)
+    # 3) Beregn Jacobien med redusert bandwidth og sparse
+    J = np.zeros((2*n, 2*n)) #Lagre enkelt først og transpose etterpå
+
+    # dFdw tilsvarer N som vi allerede har beregnet
+    # dFdxi[i][j] tilsvarer w[i]*N[j]'(xi[i]). Her er den ikke transponert enda
+    dFdxi = np.array(basis.evaluate(xi, d=1)).transpose()*w # Dette er elementwise vekting av kolonnene i N'(xi) med elementene i w
+    dFdxi = dFdxi.transpose() # Hvor lang tid tar da dette mon tro????
+    for i in range(n):
+        J[2*i] = N[i] # dF/dw tilsvarer N
+        J[2*i+1] = dFdxi[i]
+    J = J.transpose()
+    print("J", J)
+
+    #naive_jacobi = np.concatenate((N.transpose(), dFdxi.transpose()), axis=1)
+    #print("naive_jacobi for comparison\n", naive_jacobi)
     print("But is the jacobian a numpy array now?")
+
+    # Gjør Jacobian sparse og fancy og sånn. Kan det gjøres før og bedre?
     # Invert Jacobian
-    inv_jacobi = np.linalg.inv(jacobian) #Jacobian var singular fordi x ivar fucked up
+    inv_jacobi = np.linalg.inv(J)
     print("inv_jacobi\n", inv_jacobi)
 
     return Fn, inv_jacobi
@@ -86,20 +82,27 @@ def Assembly(basis, I, w, xi, n):
 def Spline_Quadrature():
     T = [0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6]
     p = 3
-    w, xi, n, integrals_c = Prepare_Data(T, p)
-    # T er endret men brukes ikke videre ned i koden så returneres ikke. For å vise at vi ikke trenger T lengre:
-    T = [0]
+    basis, integrals_c, w, xi, n = Prepare_Data(T, p)
+    # T er endret men brukes ikke videre ned i koden så returneres ikke.
 
-    ############################
-    Fn, dFn_invers = Assembly()
+    Fn, dFn_invers = Assembly(basis, integrals_c, w, xi, n)
 
-    # zk = [w, xi]
+    zk = np.zeros(2*n)
+    for i in range(n):
+        zk[2*i] = xi[i]
+        zk[2*i+1] = w[i]
+
+    dz = np.array([10000])
     counter = 0
-    convergence_criteria = Fn - integrals_c
-    while np.linalg.norm(convergence_criteria, ord=np.inf) > TOLERANCE:
-        Fn, dFn_invers = Assembly()
-        dx = dFn_invers.dot(Fn-integrals_c)
-        zk = zk - dx
+    # one would like to add additional logic, such as put a maximum number of iterations on the computation of δz k or break if ∂F becomes singular.
+    while abs(np.linalg.norm(dz, ord=np.inf)) > TOLERANCE:
+        Fn, dFn_invers = Assembly(basis, integrals_c, w, xi, n)
+        dz = dFn_invers.dot(Fn-integrals_c)
+        # Okei dette er hovedspørsmålet nå. Hva faen er dz og hvordan oppdaterer jeg w og xi på en fornuftig måte?????
+        print("dz", -dz)
+        # Antar at dz må være på formen [ xi_1 w_1 xi_2 w_2 ... xi_n w_n ]
+        time.sleep(1)
+        zk = zk - dz
         counter += 1
     print(counter, 'iterations')
 

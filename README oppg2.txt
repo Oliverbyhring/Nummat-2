@@ -39,6 +39,7 @@ An open knot vector will have the first and last elements repeated p+1 times.
 w og xi initialisert
 n
 integrals_c, eksakte integraler som lagres i Spline_Quadrature
+(Returnerer IKKE augmented Knot vector fordi vi ikke trenger denne)
 
 	Assembly tar inn w og xi og returnerer:
 F evaluert
