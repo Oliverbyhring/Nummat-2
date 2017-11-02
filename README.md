@@ -19,13 +19,11 @@ Sivert:
 
 Even: 
 
-• Til møtet torsdag 2.: gjør 2c og ha utkast på 2d (Check)
+Til etter Spania:
 
-Neste (i løpet av helga): 
+• Ferdigstill a) i Latex
 
-• Før inn abc i latex (kortfattet)
-
-• Spør Abdullah om d), få det til å fungere, og gjør den sparse og effektiv
+• Kvalitetssikre og optimaliser koden i 2d)
 
  We recommend the following resources:
 – https://www.python.org
