@@ -34,9 +34,10 @@ dz er på formen [ w_1 xi_1 x_2 xi_2 ... ]
 ###############
 Spørsmål: 
 ###############
+ - Hvordan finner vi FI-funksjonen?
+
  - Er inf-normen et bra mål på konvergens?
  - Hvor lang tid tar f. eks. transpose?
- - Er Fi spline-funksjonen over hele greia eller bare et delintervall?
 
 ###################################################
 Logg med alt som har plaget oss som har gått over:
