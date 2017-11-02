@@ -21,8 +21,11 @@ Vi har tydeligvis band structure også etter flere iterasjoner. Kanskje xi bevege
 Neste/ - Spørsmål:
 ########
 Latex a b c
-Gjør sparse Jacobian gjøres bedre?
-Sjekk om riktig ved å sammenligne
+Optimalisering. Gjør ting sparse.
+ - Sjekk om riktig ved å sammenligne resultat med andre:
+Code finished after 5 iterations
+xi [ 0.17100549  0.97557499  2.5504832   4.35306471  5.6647726 ] 
+w [ 0.43878733  1.22347037  1.81258692  1.67417278  0.8509826 ]
 
 ########
 Svar:
