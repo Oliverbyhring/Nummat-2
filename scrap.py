@@ -35,3 +35,35 @@ def Assembly(basis, integrals_c, w, xi, n):
     print("inv_jacobi\n", inv_jacobi)
 
     return Fn, inv_jacobi
+
+
+# Ulike metoder for zk
+    # Hvis zk er glidelås:
+    # zk = [xi, w]
+    # M = np.array([basis.evaluate(zk[0][2*i]) for i in range(n)])
+    #print(M)
+
+    #naive_jacobi = np.concatenate((N.transpose(), dFdxi.transpose()), axis=1)
+    #print("naive_jacobi for comparison\n", naive_jacobi)
+#    print("But is the jacobian a numpy array now?")
+
+
+
+    # Oppdatering av [xi, w]:
+    # Alternativ 1:
+    # Bruker xi og
+
+    #zk = [xi, w]
+    # og så shuffler man rundt på dz hver gang. Tar litt tid men bedre enn å endre på alt som skjer i Assembly
+
+    # Alternativ 2: zk er en glidelås av xi og w
+    #zk = np.zeros(2*n)
+    #for i in range(n):
+    #   zk[2*i] = xi[i]
+    #    zk[2*i+1] = w[i]
+    #print("zk_0", zk)
+    # Til assembly:
+    # print([basis.evaluate(zk[0][2*i]) for i in range(n)])
+    # N = np.array([basis.evaluate(zk[0][2*i]) for i in range(n)])
+    # print(N)
+    # Dette må i så fall implementeres gjennom assembly
