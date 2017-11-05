@@ -47,7 +47,6 @@ def Assembly(basis, integrals_c, w, xi, n):
     # 1) Lag en N-matrise med basisfunksjonene N evaluert i xi-punktene
     N = np.array(basis.evaluate(xi)) # N.shape = (n evaluation points, 2n basis functions)
     # Vi venter med å transponere siden det gjør det lettere å flette sammen en jacobian
-
     # 2) Beregn Fn
     Fn = N.transpose().dot(w) - integrals_c
     # print("Fn", Fn)
@@ -56,6 +55,7 @@ def Assembly(basis, integrals_c, w, xi, n):
     J = np.zeros((2*n, 2*n))
     dFdxi = np.array(basis.evaluate(xi, d=1)).transpose()*w # Elementwise vekting av kolonnene i N'(xi) med element i w
     dFdxi = dFdxi.transpose() # Gir dobbel transponering merkbart lengre kjøretid????
+
     for i in range(n):
         J[2*i] = N[i] # dF/dw tilsvarer N
         J[2*i+1] = dFdxi[i]

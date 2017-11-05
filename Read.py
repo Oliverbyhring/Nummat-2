@@ -12,3 +12,9 @@ T = curve.knots()[0] # få ut lista fra tuple-objekt
 p = curve.order()[0] # få ut ordenen fra tuple-objekt
 
 w, ksi = sq.Spline_Quadrature(T,p)
+#
+# I = 0 # line integral
+# for i in range(len(ksi)):
+#     I += w[i]*curve(ksi[i])*abs(curve.derivative(ksi[i]))
+#
+# return I
