@@ -7,20 +7,16 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def Area_Plot():
 
-
-    # Read a single NURBS patch from the file 'Curve.g2' NB: this file must be in the same directory
-
     with G2('Area.g2') as my_file:
-        my_curve = my_file.read()
-
+        my_area = my_file.read()
 
     n = 250  # number of evaluation points
-    curve = my_curve[0]   # create the NURBS curve
-    t = np.linspace(curve.start(0), curve.end(0), n)  # parametric evaluation points
-    x = curve(t)  # physical (x,y)-coordinates, size (n,2)
+    area = my_area[0]   # create the NURBS curve
+    t = np.linspace(area.start(0), area.end(0), n)  # parametric evaluation points
+    x = area(t)  # physical (x,y)-coordinates, size (n,2)
 
     fig = plt.figure()
-    plt.plot(x[:, 0], x[:, 1], 'k-')
+    Axes3D.plot_surface(x[:, 0,0],x[:, 0,1])
     plt.legend('NURBS Curve')
     plt.show()
 
