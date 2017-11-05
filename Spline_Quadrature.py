@@ -9,24 +9,22 @@ np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 TOLERANCE = 1e-11
 
-# Sist oppdatert 02.11.17
+# Sist oppdatert 5.11.17 av Sivert
 def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     # 0) Prepare knot vector
+
     if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot in the knot vector if n is not even
         new_T = T[:p+1]
         new_T.append((T[p] + T[p+1])/2)
         new_T += T[p+1:]
         T = new_T
-    print("T =", T)
+
     n = int((len(T) - p - 1) / 2)
-    print("2n =", 2*n)
 
     # 1) Calculate exact integrals
     integrals_c = np.zeros(2*n)
     for i in range(2*n):
         integrals_c[i] = (T[i+p+1] - T[i])/(p+1)
-    print("integrals_c", integrals_c)
-    # Ser bra ut. De basisfunksjonene som er helt inneholdt i intervallet integreres til 1, de mot kantene har deler som 'ligger utenfor'
 
     # 2) Generate initial xi and w
     xi = np.zeros(n)
@@ -35,19 +33,16 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
         tau_abscissa[i] = sum(T[i+1:i+p+1])/p
     for i in range(n):
         xi[i] = (tau_abscissa[2 * i] + tau_abscissa[2 * i + 1]) / 2
-    print("xi", xi)
 
     w = np.zeros(n)
     for i in range(n):
         w[i] = integrals_c[2*i] + integrals_c[2*i+1]
-    print("w", w)
 
     # 3) Generate basis functions, evaluer og finn partiellderiverte av F
     basis = spl.BSplineBasis(order=p + 1, knots=T)
-    print("basis", basis)
     return basis, integrals_c, w, xi, n
 
-# Sist oppdatert 02.11.17
+
 def Assembly(basis, integrals_c, w, xi, n):
     # 1) Lag en N-matrise med basisfunksjonene N evaluert i xi-punktene
     N = np.array(basis.evaluate(xi)) # N.shape = (n evaluation points, 2n basis functions)
@@ -65,18 +60,15 @@ def Assembly(basis, integrals_c, w, xi, n):
         J[2*i] = N[i] # dF/dw tilsvarer N
         J[2*i+1] = dFdxi[i]
     J = J.transpose()
-    # print("J", J)
 
     return Fn, J
 
-def Spline_Quadrature():
-    T = [0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 6]
-    p = 3 # Antall repeterende elemter i T, minus 1
-    basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
+def Spline_Quadrature(T,p):
 
+    basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
     dz = np.array([10000])
     counter = 0
-    print("\nBegynner iterasjon")
+
     while abs(np.linalg.norm(dz, ord=np.inf)) > TOLERANCE and counter < 500:
         Fn, J = Assembly(basis, integrals_c, w, xi, n)
         dz = sp.linalg.solve(J, Fn) # dz er på formen [ w_1 xi_1 x_2 xi_2 ... ]
@@ -91,5 +83,38 @@ def Spline_Quadrature():
 
     return [w, xi]
 
-if __name__ == "__main__":
-    Spline_Quadrature()
+##########################
+# Sivertkode herfra
+
+
+from splipy.IO import * # "OI" changed to "io" in last edit - I dont have last edit
+import matplotlib.pyplot as plt
+# Read a single NURBS patch from the file 'Curve.g2' NB: this file must be in the same directory
+
+with G2('Curve.g2') as my_file:
+    my_curve = my_file.read()
+
+curve = my_curve[0]   # create the NURBS curve
+T = curve.knots()[0] # få ut lista fra tuple-objekt
+p = curve.order()[0] # få ut ordenen fra tuple-objekt
+
+w, ksi = Spline_Quadrature(T,p)
+print(w,ksi)
+
+n = 250  # number of evaluation points
+t = np.linspace(curve.start(0), curve.end(0), n)  # parametric evaluation points
+x = curve(t)  # physical (x,y)-coordinates, size (n,2)
+v = curve.derivative(t, 1)  # velocity at all points
+a = curve.derivative(t, 2)  # acceleration at all points
+
+
+# plot the curve.  {and get reference to the acceleration/velocity lines which we
+# will update during animation} OMITTED
+
+fig = plt.figure()
+plt.plot(x[:, 0], x[:, 1], 'k-')
+#velocity, = plt.plot([x[0, 0], x[0, 0] + v[0, 0]], [x[0, 1], x[0, 1] + v[0, 1]], 'r-', linewidth=2)
+#acceleration, = plt.plot([x[0, 0], x[0, 0] + a[0, 0]], [x[0, 1], x[0, 1] + a[0, 1]], 'b-', linewidth=3)
+#plt.axis('equal')
+plt.legend('NURBS Curve')
+plt.show()
