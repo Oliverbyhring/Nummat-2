@@ -7,13 +7,21 @@ np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 ################################################################################
 
-TOLERANCE = 1e-11
+# EVEN:
+# Vi må garra bruke sparse.linalg.spsolve og sparse.csr_matrix, som er
+# scipy-funksjoner oppgitt i d). Gjetter på at det har med at vi får
+# 'numpy.linalg.linalg.LinAlgError: Matrix is singular' å gjøre.
 
 # Sist oppdatert 5.11.17 av Sivert
-def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
-    # 0) Prepare knot vector
 
-    if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot in the knot vector if n is not even
+################################################################################
+
+TOLERANCE = 1e-11
+
+def Prepare_Data(T, p): # (knot vector, degree of polynomial)
+
+    # 0) Prepare knot vector
+    if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot if n is not even
         new_T = T[:p+1]
         new_T.append((T[p] + T[p+1])/2)
         new_T += T[p+1:]
@@ -38,18 +46,20 @@ def Prepare_Data(T, p): # T is knot vector, p is degree of polynomial
     for i in range(n):
         w[i] = integrals_c[2*i] + integrals_c[2*i+1]
 
-    # 3) Generate basis functions, evaluer og finn partiellderiverte av F
+    # 3) Generate basis functions, evaluate and get partial derivatives of F
     basis = spl.BSplineBasis(order=p + 1, knots=T)
+
     return basis, integrals_c, w, xi, n
 
 
 def Assembly(basis, integrals_c, w, xi, n):
+
     # 1) Lag en N-matrise med basisfunksjonene N evaluert i xi-punktene
     N = np.array(basis.evaluate(xi)) # N.shape = (n evaluation points, 2n basis functions)
     # Vi venter med å transponere siden det gjør det lettere å flette sammen en jacobian
+
     # 2) Beregn Fn
     Fn = N.transpose().dot(w) - integrals_c
-    # print("Fn", Fn)
 
     # 3) Beregn Jacobien med redusert bandwidth og sparse. dFdw tilsvarer N, dFdxi[i][j] tilsvarer w[i]*N[j]'(xi[i]).
     J = np.zeros((2*n, 2*n))
@@ -63,9 +73,11 @@ def Assembly(basis, integrals_c, w, xi, n):
 
     return Fn, J
 
+
 def Spline_Quadrature(T,p):
 
     basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
+    #HERRE MÅ FIKSES!
     dz = np.array([10000])
     counter = 0
 
@@ -79,6 +91,5 @@ def Spline_Quadrature(T,p):
         print("\n", counter, "\nw", w, "\nxi", xi)
 
     print("\nCode finished after", counter, 'iterations')
-    print("xi", xi, "\nw", w)
 
-    return [w, xi]
+    return [w, xi] # noen spesiell grunn til at disse retureres i vektor?
