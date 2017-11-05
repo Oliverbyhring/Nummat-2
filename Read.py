@@ -8,7 +8,7 @@ with G2('Curve.g2') as my_file:
     my_curve = my_file.read()
 
 curve = my_curve[0]   # create the NURBS curve
-w, ksi = sq.Spline_Quadrature(curve.knots(),curve.order())
+T = curve.knots()[0] # få ut lista fra tuple-objekt
+p = curve.order()[0] # få ut ordenen fra tuple-objekt
 
-
-print(w,ksi)
+w, ksi = sq.Spline_Quadrature(T,p)
