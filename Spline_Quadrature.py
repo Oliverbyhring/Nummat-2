@@ -24,7 +24,7 @@ def Prepare_Data(T, p): # (knot vector, degree of polynomial)
     # 0) Prepare knot vector
     if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot if n is not even
         new_T = T[:p+1]
-        new_T.append((T[p] + T[p+1])/2)
+        np.append(new_T,(T[p] + T[p+1])/2)
         new_T += T[p+1:]
         T = new_T
 
@@ -75,9 +75,9 @@ def Assembly(basis, integrals_c, w, xi, n):
     return Fn, J
 
 
-def Spline_Quadrature():
-    T = [0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4]
-    p = 3 # Antall repeterende elemter i T, minus 1
+def Spline_Quadrature(T,p):
+    #T = [0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4]
+    #p = 3 # Antall repeterende elemter i T, minus 1
     basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
     #HERRE MÅ FIKSES!
     dz = np.array([10000])

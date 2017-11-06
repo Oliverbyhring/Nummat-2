@@ -1,7 +1,7 @@
 from splipy.IO import * # "OI" changed to "io" in last edit - I dont have last edit
 import matplotlib.pyplot as plt
 import numpy as np
-import Spline_Quadrature_OLD as sq
+import Spline_Quadrature as sq
 #import splipy as spl
 #import scipy as sp
 #import sys
@@ -14,9 +14,9 @@ def Curve_Integral():
 
     curve = my_curve[0]   # create the NURBS curve
     T = curve.knots(0, True) # få ut lista fra tuple-objekt
-    p = curve.order(0) - 1# få ut ordenen fra tuple-objekt
+    p = curve.order(0) - 1 # få ut ordenen fra tuple-objekt
 
-    w, ksi = sq.Spline_Quadrature()
+    w, ksi = sq.Spline_Quadrature(T,p)
     #
     # I = 0 # line integral
     # for i in range(len(ksi)):
