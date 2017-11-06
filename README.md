@@ -1,23 +1,16 @@
 # To-do-liste
 (Faste møter mandag 10:00 og torsdag 09:00)
 
-Oliver: 
-
-• Til møtet torsdag 2: Fortsette 1b
-
-• Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
+Oliver:
 
 Adrian: 1a, 1e, 1f
 
-• Til møtet torsdag 2.: ferdig med 1e) og godt i gang med a) og f)
-
-• Lag en tidsplan med delfrister frem mot ferdig prosjekt. 
-
 Sivert:
 
-• Til møtet torsdag 2.: våkne i tide
+• 2e),f),g) h) kjørende til torsdag (mangler h).
+• Skrive i Latex for deloppgaver e-h.
 
-Even: 
+Even:
 
 Til etter Spania:
 
@@ -54,8 +47,8 @@ this means that all submodules you write must be included in this file.
 • There will be much emphasis on running time. When you are sure that the program
 is 100% correct, examine whether the speed is optimal.
 
-Straffepils: 
-Oliver 1 (ikke gjort todo mandag 30)
-Even 
-Adrian 
+Straffepils:
+Oliver 2 (ikke gjort todo mandag 30, sein mandag 6.)
+Even
+Adrian 1 (sein mandag 6.)
 Sivert 1 (ikke møtt mandag 30)
