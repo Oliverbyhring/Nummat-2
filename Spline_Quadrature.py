@@ -76,8 +76,8 @@ def Assembly(basis, integrals_c, w, xi, n):
 
 
 def Spline_Quadrature():
-    T = [0, 0, 0, 1, 2, 3, 4, 4, 4]
-    p = 4
+    T = [0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4]
+    p = 3 # Antall repeterende elemter i T, minus 1
     basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
     #HERRE MÅ FIKSES!
     dz = np.array([10000])
