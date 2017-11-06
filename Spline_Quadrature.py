@@ -5,6 +5,7 @@ import scipy as sp
 import splipy as spl
 np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
+
 ################################################################################
 
 # EVEN:
@@ -74,8 +75,9 @@ def Assembly(basis, integrals_c, w, xi, n):
     return Fn, J
 
 
-def Spline_Quadrature(T,p):
-
+def Spline_Quadrature():
+    T = [0, 0, 0, 1, 2, 3, 4, 4, 4]
+    p = 4
     basis, integrals_c, w, xi, n = Prepare_Data(T, p) # T er endret men brukes ikke videre i koden så returneres ikke
     #HERRE MÅ FIKSES!
     dz = np.array([10000])
@@ -83,7 +85,9 @@ def Spline_Quadrature(T,p):
 
     while abs(np.linalg.norm(dz, ord=np.inf)) > TOLERANCE and counter < 500:
         Fn, J = Assembly(basis, integrals_c, w, xi, n)
-        dz = sp.linalg.solve(J, Fn) # dz er på formen [ w_1 xi_1 x_2 xi_2 ... ]
+        J = sp.sparse.csr_matrix(J)
+        dz = sp.sparse.linalg.spsolve(J, Fn) # dz er på formen [ w_1 xi_1 x_2 xi_2 ... ]
+
         for i in range(n):
             w[i] -= dz[2*i]
             xi[i] -= dz[2 * i +1]
