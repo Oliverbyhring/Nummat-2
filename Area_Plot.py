@@ -12,12 +12,14 @@ def Area_Plot():
 
     n = 250  # number of evaluation points
     area = my_area[0]   # create the NURBS curve
-    t = np.linspace(area.start(0), area.end(0), n)  # parametric evaluation points
-    x = area(t)  # physical (x,y)-coordinates, size (n,2)
+    u = np.linspace(area.start('u'), area.end('u'), n)  # parametric evaluation points
+    v = np.linspace(area.start('v'), area.end('v'), n)
+    x = area(u,v)  # physical (x,y)-coordinates, size (n,2)
 
     fig = plt.figure()
-    Axes3D.plot_surface(x[:, 0,0],x[:, 0,1])
-    plt.legend('NURBS Curve')
+    plt.plot(x[:,:,0],x[:,:,1],'k-')
+    plt.plot(x[:,:,0].T,x[:,:,1].T,'k-')
+    plt.legend('NURBS Area')
     plt.show()
 
 

@@ -18,11 +18,16 @@ def Curve_Integral():
 
     w, ksi = sq.Spline_Quadrature(T,p)
     print(ksi)
-    #
-    # I = 0 # line integral
-    # for i in range(len(ksi)):
-    #     I += w[i]*curve(ksi[i])*abs(curve.derivative(ksi[i]))
-    # return I
+
+    I = 0 # line integral
+    E = np.zeros(len(ksi))
+
+
+    for i in range(len(ksi)):
+        E = curve.derivative(ksi[i])
+        I += w[i]*np.sqrt(E[0]**2+E[1]**2)
+    print(I)
+    return I
 
 
 if __name__ == "__main__":
