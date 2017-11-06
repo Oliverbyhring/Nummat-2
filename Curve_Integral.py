@@ -13,8 +13,8 @@ def Curve_Integral():
         my_curve = my_file.read()
 
     curve = my_curve[0]   # create the NURBS curve
-    T = curve.knots()[0] # få ut lista fra tuple-objekt
-    p = curve.order()[0] # få ut ordenen fra tuple-objekt
+    T = curve.knots(0, True) # få ut lista fra tuple-objekt
+    p = curve.order(0) # få ut ordenen fra tuple-objekt
 
     w, ksi = sq.Spline_Quadrature(T,p)
     #
