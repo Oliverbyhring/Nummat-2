@@ -17,17 +17,13 @@ np.set_printoptions(suppress=True, linewidth=np.nan, threshold=np.nan)
 
 ################################################################################
 
-TOLERANCE = 1e-11
+TOLERANCE = 2e-4
 
 def Prepare_Data(T, p): # (knot vector, degree of polynomial)
 
     # 0) Prepare knot vector
     if (len(T) - p - 1) % 2: # n=len(T)-p-1. We add a knot if n is not even
-        new_T = T[:p+1]
-        np.append(new_T,(T[p] + T[p+1])/2)
-        new_T += T[p+1:]
-        T = new_T
-
+        T = np.concatenate([T[:p+1],np.array([(T[p]+T[p+1])/2]),T[p+1:]],axis=0)
     n = int((len(T) - p - 1) / 2)
 
     # 1) Calculate exact integrals
@@ -92,8 +88,8 @@ def Spline_Quadrature(T,p):
             w[i] -= dz[2*i]
             xi[i] -= dz[2 * i +1]
         counter += 1
-        print("\n", counter, "\nw", w, "\nxi", xi)
+        #print("\n", counter, "\nw", w, "\nxi", xi)
 
     print("\nCode finished after", counter, 'iterations')
 
-    return [w, xi] # noen spesiell grunn til at disse retureres i vektor?
+    return w, xi # noen spesiell grunn til at disse retureres i vektor?

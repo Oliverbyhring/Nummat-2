@@ -17,6 +17,7 @@ def Curve_Integral():
     p = curve.order(0) - 1 # få ut ordenen fra tuple-objekt
 
     w, ksi = sq.Spline_Quadrature(T,p)
+    print(ksi)
     #
     # I = 0 # line integral
     # for i in range(len(ksi)):
