@@ -13,23 +13,20 @@ def Area_Integral():
         my_Area = my_file.read()
 
     surface = my_Area[0]   # create the NURBS surface
-    T = surface.knots(0, True) # få ut lista fra tuple-objekt
+    T = surface.knots(0, True) # få ut skjøtene fra tuple-objekt
     p = surface.order(0) - 1 # få ut ordenen fra tuple-objekt
 
     w, ksi = sq.Spline_Quadrature(T,p)
-    print(ksi)
 
-    I = 0 # line integral
-    E = np.zeros(len(ksi))
+    derivative = surface.derivative(ksi)
+    du = derivative[:,0]
+    dv = derivative[:,1]
 
-""" 
+    A = 0 # surface integral
     for i in range(len(ksi)):
-        E = curve.derivative(ksi[i])
-        I += w[i]*np.sqrt(E[0]**2+E[1]**2)
-    print(I)
-    return I
-
-"""
+        A += w[i]*np.cross(du[i],dv[i])
+    print(A)
+    return A
 
 
 if __name__ == "__main__":
