@@ -1,9 +1,14 @@
 # To-do-liste
 (Faste møter mandag 10:00 og torsdag 09:00)
 
+Intern deadline for våre arbeidsoppgaver onsdag, kl. 11 (så tar vi et møte da).
+
 Oliver:
 
-Adrian: 1a, 1e, 1f
+Adrian:
+Føre a,) c), e), f) i Latex. 
+Optimalisere/sjekke kode i c) og d).
+
 
 Sivert:
 
@@ -11,14 +16,14 @@ Sivert:
 • Skrive i Latex for deloppgaver e-h.
 
 Even:
-
-Til etter Spania:
-
 • Ferdigstill a) i Latex
-
 • Kvalitetssikre og optimaliser koden i 2d)
 
- We recommend the following resources:
+
+
+
+
+We recommend the following resources:
 – https://www.python.org
 – https://docs.scipy.org/doc/
 – http://matplotlib.org
@@ -48,7 +53,7 @@ this means that all submodules you write must be included in this file.
 is 100% correct, examine whether the speed is optimal.
 
 Straffepils:
-Oliver 2 (ikke gjort todo mandag 30, sein mandag 6.)
+Oliver 3 (ikke gjort todo mandag 30, sein mandag 6.)
 Even
 Adrian 1 (sein mandag 6.)
 Sivert 1 (ikke møtt mandag 30)
